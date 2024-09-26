@@ -1,6 +1,14 @@
 const express = require('express');
 const app = express();
 
+const projectsRouter = require('./api/projects/projects-router');
+const actionsRouter = require('./api/actions/actions-router'); 
+
+app.use(express.json()); // middleware to parse JSON bodies
+
+app.use('/api/projects', projectsRouter);
+app.use('/api/actions', actionsRouter); 
+
 const port = 9000; 
 
 app.listen(port, () => {
