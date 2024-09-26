@@ -1,18 +1,8 @@
-const express = require('express');
-const app = express();
+const server = require('./api/server');
+const port = process.env.PORT || 9000;
 
-const projectsRouter = require('./api/projects/projects-router');
-const actionsRouter = require('./api/actions/actions-router'); 
-
-app.use(express.json()); // middleware to parse JSON bodies
-
-app.use('/api/projects', projectsRouter);
-app.use('/api/actions', actionsRouter); 
-
-const port = 9000; 
-
-app.listen(port, () => {
-  console.log(`Server running OK on port ${port}`);
+server.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
 
 
