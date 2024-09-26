@@ -1,8 +1,9 @@
 const express = require('express');
 const Projects = require('./projects-model');
-const { validateProjectId, validateProjectData } = require('./projects-middleware');
-
+const Actions = require('../actions/actions-model')
 const router = express.Router();
+
+const { validateProjectId, validateProjectData } = require('./projects-middleware');
 
 
 router.get('/', (req, res) => {
@@ -42,6 +43,22 @@ router.get('/:id', validateProjectId, (req, res) => {
             stack: err.stack,
         });
     });
+});
+
+router.get('/:id/actions', validateProjectId, async (req, res) => {
+    const { id } = req.params;
+    try {
+        const actions = await Actions.get(); 
+        const projectActions = actions.filter(action => action.project_id === parseInt(id));
+
+        if (projectActions.length) {
+            res.status(200).json(projectActions); 
+        } else {
+            res.status(200).json([]); 
+        }
+    } catch (err) {
+        res.status(500).json({ message: 'Failed to retrieve actions for the project' });
+    }
 });
 
 router.post('/', validateProjectData, async (req, res) => {
